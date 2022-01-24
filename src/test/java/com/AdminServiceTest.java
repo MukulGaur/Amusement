@@ -62,22 +62,4 @@ class AdminServiceTest {
 		assertThat(adminService.updateAdminById(a1, 1)).isEqualTo(a1);
 	}
 
-	@Test
-	void testDeleteAdmin() {
-		Admin c1=new Admin();
-		c1.setUserId(1);
-		c1.setEmail("customer@gmail.com");
-		c1.setFirstName("Geetha");
-		c1.setLastName("Madhuri");
-		c1.setMobileNumber("9988445512");
-		c1.setPassword("Geeth@12");
-		c1.setUsername("Geetmadhu");
-		
-		Optional<Admin> c2=Optional.of(c1);
-
-		Mockito.when(adminService.findById(1)).thenReturn(c2);
-		Mockito.when(adminService.existsById(c1.getUserId())).thenReturn(false);
-		assertFalse(adminService.existsById(c1.getUserId()));
-	}
-
 }
