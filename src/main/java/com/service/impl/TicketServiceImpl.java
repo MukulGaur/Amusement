@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.entity.Ticket;
+import com.exception.TicketNotFoundException;
 import com.repository.TicketRepository;
 import com.service.TicketService;
 
@@ -21,8 +22,8 @@ public class TicketServiceImpl implements TicketService{
 	}
 
 	@Override
-	public Ticket updateTicketById(Ticket ticket, int ticketId) {
-		Ticket existingTicket = ticketRepo.findById(ticketId).orElseThrow();
+	public Ticket updateTicketById(Ticket ticket, int ticketId) throws TicketNotFoundException {
+		Ticket existingTicket = ticketRepo.findById(ticketId).orElseThrow(() -> new TicketNotFoundException("Ticket not found!"));
 		
 		existingTicket.setCustomer(ticket.getCustomer());
 		existingTicket.setActivity(ticket.getActivity());
@@ -34,8 +35,8 @@ public class TicketServiceImpl implements TicketService{
 	}
 
 	@Override
-	public String deleteTicketById(int ticketId) {
-		ticketRepo.findById(ticketId).orElseThrow();
+	public String deleteTicketById(int ticketId) throws TicketNotFoundException {
+		ticketRepo.findById(ticketId).orElseThrow(() -> new TicketNotFoundException("Ticket not found!"));
 		
 		ticketRepo.deleteById(ticketId);
 		return "Deleted";
@@ -47,8 +48,8 @@ public class TicketServiceImpl implements TicketService{
 	}
 
 	@Override
-	public Ticket getTicketById(int ticketId) {
-		return ticketRepo.findById(ticketId).orElseThrow();
+	public Ticket getTicketById(int ticketId) throws TicketNotFoundException {
+		return ticketRepo.findById(ticketId).orElseThrow(() -> new TicketNotFoundException("Ticket not found!"));
 	}
 
 }

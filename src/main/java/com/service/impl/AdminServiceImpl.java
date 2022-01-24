@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.entity.Admin;
+import com.exception.AdminNotFoundException;
 import com.repository.AdminRepository;
 import com.service.AdminService;
 
@@ -21,8 +22,8 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	@Override
-	public Admin updateAdminById(Admin admin, int adminId) {
-		Admin existingAdmin = adminRepo.findById(adminId).orElseThrow();
+	public Admin updateAdminById(Admin admin, int adminId) throws AdminNotFoundException {
+		Admin existingAdmin = adminRepo.findById(adminId).orElseThrow(() -> new AdminNotFoundException("Admin not found!"));
 		
 		existingAdmin.setFirstName(admin.getFirstName());
 		existingAdmin.setLastName(admin.getLastName());
@@ -36,15 +37,15 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	@Override
-	public String deleteAdminById(int adminId) {
-		adminRepo.findById(adminId).orElseThrow();
+	public String deleteAdminById(int adminId) throws AdminNotFoundException {
+		adminRepo.findById(adminId).orElseThrow(() -> new AdminNotFoundException("Admin not found!"));
 		adminRepo.deleteById(adminId);
 		return "Deleted";
 	}
 
 	@Override
-	public Admin getAdminById(int adminId) {
-		return adminRepo.findById(adminId).orElseThrow();
+	public Admin getAdminById(int adminId) throws AdminNotFoundException {
+		return adminRepo.findById(adminId).orElseThrow(() -> new AdminNotFoundException("Admin not found!"));
 	}
 
 	@Override

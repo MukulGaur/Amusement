@@ -1,11 +1,13 @@
 package com.service.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.entity.Customer;
+import com.exception.CustomerNotFoundException;
 import com.repository.CustomerRepository;
 import com.service.CustomerService;
 
@@ -21,9 +23,9 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
-	public Customer updateCustomerById(Customer customer, int customerId) {
+	public Customer updateCustomerById(Customer customer, int customerId) throws CustomerNotFoundException {
 		
-		Customer existingCustomer = customerRepo.findById(customerId).orElseThrow();
+		Customer existingCustomer = customerRepo.findById(customerId).orElseThrow(() -> new CustomerNotFoundException("Customer not found!"));
 		
 		existingCustomer.setFirstName(customer.getFirstName());
 		existingCustomer.setLastName(customer.getLastName());
@@ -37,8 +39,8 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
-	public String deleteCustomerById(int customerId) {
-		customerRepo.findById(customerId).orElseThrow();
+	public String deleteCustomerById(int customerId) throws CustomerNotFoundException {
+		customerRepo.findById(customerId).orElseThrow(() -> new CustomerNotFoundException("Customer not found!"));
 		customerRepo.deleteById(customerId);
 		return "Deleted";
 	}
@@ -49,8 +51,15 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
-	public Customer getCustomerById(int customerId) {
-		return customerRepo.findById(customerId).orElseThrow();
+	public Customer getCustomerById(int customerId) throws CustomerNotFoundException {
+		return customerRepo.findById(customerId).orElseThrow(() -> new CustomerNotFoundException("Customer not found!"));
 	}
+
+	@Override
+	public List<Customer> getCustomerListByName(String firstName) {
+		return customerRepo.findByFirstName(firstName);
+	}
+
+
 
 }

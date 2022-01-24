@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,10 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.entity.Admin;
+import com.exception.AdminNotFoundException;
 import com.service.AdminService;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin
 public class AdminController {
 	
 	@Autowired
@@ -35,17 +38,17 @@ public class AdminController {
 	}
 	
 	@GetMapping("/getAdminById/{adminId}")
-	public ResponseEntity<Admin> getAdminById(@PathVariable int adminId){
+	public ResponseEntity<Admin> getAdminById(@PathVariable int adminId) throws AdminNotFoundException{
 		return new ResponseEntity<Admin>(adminService.getAdminById(adminId), HttpStatus.OK);
 	}
 	
 	@PutMapping("/updateAdminById/{adminId}")
-	public ResponseEntity<Admin> updateAdminById(@PathVariable int adminId, @RequestBody Admin admin){
+	public ResponseEntity<Admin> updateAdminById(@PathVariable int adminId, @RequestBody Admin admin) throws AdminNotFoundException{
 		return new ResponseEntity<Admin>(adminService.updateAdminById(admin, adminId), HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/deleteAdminById/{adminId}")
-	public ResponseEntity<String> deleteAdminById(@PathVariable int adminId){
+	public ResponseEntity<String> deleteAdminById(@PathVariable int adminId) throws AdminNotFoundException{
 		adminService.deleteAdminById(adminId);
 		return new ResponseEntity<String>("Deleted", HttpStatus.OK);
 	}
