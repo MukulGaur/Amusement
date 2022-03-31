@@ -12,8 +12,5 @@ public interface TicketService {
 	public String deleteTicketById(int ticketId) throws TicketNotFoundException;
 	public List<Ticket> getAllTickets();
 	public Ticket getTicketById(int ticketId) throws TicketNotFoundException;
-	
-//	public List<Ticket> getAllTicketsByCustomerId(int customerId);
-//	public Ticket calculateBill(int customerId);
 
 }
